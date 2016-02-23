@@ -22,8 +22,11 @@ pipedrive.on('connect', function() {
 
 pipedrive.on('deal.updated', function(err, deal) {
 	if (deal.current && deal.previous && deal.current.status === 'won' && deal.previous.status !== 'won') {
-		player.play(function(err, player) {
-			console.log(deal.current.title + ' (' + deal.current.value + ' ' + deal.current.currency + ')');
+		console.log(deal.current.title + ' (' + deal.current.value + ' ' + deal.current.currency + ')');
+
+		player.play(function(err) {
+			var voiceoverPlayer = new Player('http://translate.google.com/translate_tts?tl=en&q=' + encodeURIComponent(deal.current.title) + '%20worth%20' + encodeURIComponent(deal.current.value) + '%20' + encodeURIComponent(deal.current.currency) + '&client=tw-ob');
+			voiceoverPlayer.play(function(err) {});
 		});
 	}
 });
